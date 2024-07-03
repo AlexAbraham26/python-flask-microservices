@@ -1,0 +1,24 @@
+# Exclude the following files and directories from the Docker build context
+
+# Ignore Python cache files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment
+venv
+.env
+
+# Ignore other potentially large files or directories
+*.git
+*.gitignore
+Dockerfile
+README.md
+
+# Exclude other unnecessary files
+*.log
+*.sqlite3
+*.db
+*.tmp
+
