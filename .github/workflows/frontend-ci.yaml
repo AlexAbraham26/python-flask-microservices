@@ -60,6 +60,8 @@ jobs:
         file: frontend/Dockerfile
         push: true
         tags: alex24a/myapp-frontend:latest
+      env:
+        DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
       # Pushes the Docker image to Docker Hub
 
     - name: Deploy to Azure
