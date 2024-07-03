@@ -1,0 +1,52 @@
+name: Frontend CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set Up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install Dependencies
+      run: |
+        cd frontend
+        pip install -r requirements.txt
+
+    - name: Run Tests
+      run: |
+        cd frontend
+        pytest
+
+    - name: Build Docker Image
+      run: |
+        cd frontend
+        docker build -t alex24a/myapp-frontend:latest -f Dockerfile .
+
+    - name: Push Docker Image
+      uses: docker/build-push-action@v4
+      with:
+        context: frontend
+        file: frontend/Dockerfile
+        push: true
+        tags: alex24a/myapp-frontend:latest
+
+    - name: Deploy to Azure
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+          kubectl apply -f k8s/frontend-deployment.yaml
