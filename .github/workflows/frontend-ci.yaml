@@ -15,26 +15,43 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
+      # Checks out the repository code to the runner
 
     - name: Set Up Python 3.9
       uses: actions/setup-python@v2
       with:
         python-version: '3.9'
+      # Sets up Python 3.9 environment
 
     - name: Install Dependencies
       run: |
         cd frontend
         pip install -r requirements.txt
+      # Installs Python dependencies from the requirements.txt file
+
+    - name: Verify pytest Installation
+      run: |
+        cd frontend
+        pip show pytest
+      # Verifies that pytest is installed
+
+    - name: List Installed Packages
+      run: |
+        cd frontend
+        pip freeze
+      # Lists installed packages to verify that all dependencies are installed
 
     - name: Run Tests
       run: |
         cd frontend
         pytest
+      # Runs the test suite using pytest
 
     - name: Build Docker Image
       run: |
         cd frontend
         docker build -t alex24a/myapp-frontend:latest -f Dockerfile .
+      # Builds the Docker image for the frontend service
 
     - name: Push Docker Image
       uses: docker/build-push-action@v4
@@ -43,6 +60,7 @@ jobs:
         file: frontend/Dockerfile
         push: true
         tags: alex24a/myapp-frontend:latest
+      # Pushes the Docker image to Docker Hub
 
     - name: Deploy to Azure
       uses: azure/CLI@v1
@@ -50,3 +68,4 @@ jobs:
         inlineScript: |
           az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
           kubectl apply -f k8s/frontend-deployment.yaml
+      # Deploys the Docker image to Azure Kubernetes Service (AKS)
