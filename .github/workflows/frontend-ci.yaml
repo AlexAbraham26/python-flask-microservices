@@ -55,11 +55,11 @@ jobs:
     - name: Build Docker Image
       run: |
         cd frontend
-        docker build -t alex24a/myapp-frontend:latest -f Dockerfile .
+        docker buildx build -t alex24a/myapp-frontend:latest -f Dockerfile .
       # Builds the Docker image for the frontend service
 
-   - name: Log in to Docker Hub
-      run: echo "${{ secrets.MYAPP_FRONTEND_TOKEN }}" | docker login -u alex24a --password-stdin
+    - name: Log in to Docker Hub
+        run: echo "${{ secrets.MYAPP_FRONTEND_TOKEN }}" | docker login -u alex24a --password-stdin
 
     - name: Push Docker Image
       run: |
