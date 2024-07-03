@@ -1,5 +1,3 @@
-# Exclude the following files and directories from the Docker build context
-
 # Ignore Python cache files
 __pycache__
 *.pyc
@@ -10,10 +8,9 @@ __pycache__
 venv
 .env
 
-# Ignore other potentially large files or directories
-*.git
-*.gitignore
-Dockerfile
+# Ignore version control and configuration files
+.git
+.gitignore
 README.md
 
 # Exclude other unnecessary files
@@ -22,3 +19,6 @@ README.md
 *.db
 *.tmp
 
+# Exclude IDE-specific files
+.idea
+.vscode
