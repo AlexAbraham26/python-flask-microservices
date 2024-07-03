@@ -59,7 +59,7 @@ jobs:
       # Builds the Docker image for the frontend service
 
     - name: Log in to Docker Hub
-        run: echo "${{ secrets.MYAPP_FRONTEND_TOKEN }}" | docker login -u alex24a --password-stdin
+      run: echo "${{ secrets.MYAPP_FRONTEND_TOKEN }}" | docker login -u alex24a --password-stdin
 
     - name: Push Docker Image
       run: |
