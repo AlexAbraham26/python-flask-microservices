@@ -47,29 +47,3 @@ jobs:
         pytest
       # Runs the test suite using pytest
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-      with:
-        buildkitd-flags: --debug
-
-    - name: Build Docker Image
-      run: |
-        cd frontend
-        docker buildx build -t alex24a/myapp-frontend:latest -f Dockerfile .
-      # Builds the Docker image for the frontend service
-
-    - name: Log in to Docker Hub
-      run: echo "${{ secrets.MYAPP_FRONTEND_TOKEN }}" | docker login -u alex24a --password-stdin
-
-    - name: Push Docker Image
-      run: |
-        docker push alex24a/myapp-frontend:latest
-
-
-    - name: Deploy to Azure
-      uses: azure/cli@v2
-      with:
-        inlineScript: |
-          az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
-          kubectl apply -f k8s/frontend-deployment.yaml
-      # Deploys the Docker image to Azure Kubernetes Service (AKS)
