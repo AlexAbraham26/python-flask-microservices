@@ -49,8 +49,7 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        cd frontend
-        docker build -t alex24a/myapp-frontend:latest -f Dockerfile .
+        docker build -t alex24a/myapp-frontend:latest -f frontend/Dockerfile .
       # Builds the Docker image for the frontend service
 
     - name: Push Docker Image
@@ -61,11 +60,11 @@ jobs:
         push: true
         tags: alex24a/myapp-frontend:latest
       env:
-        DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        DOCKER_HUB_TOKEN: ${{ secrets.MYAPP_FRONTEND_TOKEN }}
       # Pushes the Docker image to Docker Hub
 
     - name: Deploy to Azure
-      uses: azure/CLI@v1
+      uses: azure/cli@v2
       with:
         inlineScript: |
           az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
