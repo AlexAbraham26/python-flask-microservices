@@ -55,7 +55,7 @@ jobs:
       uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-        auth-type: 'servicePrincipal's
+        auth-type: 'servicePrincipal'
     # Logs in to Azure using the service principal credentials
 
     - name: Set Up Terraform
