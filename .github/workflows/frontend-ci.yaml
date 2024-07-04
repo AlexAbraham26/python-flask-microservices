@@ -54,11 +54,7 @@ jobs:
     - name: Log in to Azure
       uses: azure/login@v2
       with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        auth-type: 'service_principal'
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     # Logs in to Azure using the service principal credentials
 
     - name: Set Up Terraform
