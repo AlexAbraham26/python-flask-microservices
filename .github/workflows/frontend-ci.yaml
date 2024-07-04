@@ -62,7 +62,7 @@ jobs:
         auth-type: 'SERVICE_PRINCIPAL'
     # Logs in to Azure using the service principal credentials
 
-  - name: Prepare Environment Variables
+    - name: Prepare Environment Variables
       run: |
         # Print the AZURE_CREDENTIALS secret to verify JSON format
         echo "Raw AZURE_CREDENTIALS JSON:"
