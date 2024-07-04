@@ -75,8 +75,12 @@ jobs:
         cd terraform
         terraform plan
         terraform plan -out=tfplan
-        terraform show -json tfplan
     # Creates an execution plan
+
+    - name: Terraform Show
+      run: |
+        cd terraform
+        terraform show -json tfplan
 
     - name: Terraform Apply
       run: |
