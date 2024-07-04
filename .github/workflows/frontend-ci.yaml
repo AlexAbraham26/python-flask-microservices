@@ -64,19 +64,16 @@ jobs:
 
     - name: Prepare Environment Variables
       run: |
-        # Print the AZURE_CREDENTIALS secret to verify JSON format
         echo "Raw AZURE_CREDENTIALS JSON:"
         echo "${{ secrets.AZURE_CREDENTIALS }}"
 
-        # Test `jq` commands individually to verify parsing
         echo "Parsed AZURE_CREDENTIALS JSON:"
         echo "${{ secrets.AZURE_CREDENTIALS }}" | jq '.'
 
-        # Extract values from the JSON and set environment variables
-        echo "ARM_CLIENT_ID=$(echo ${{ secrets.AZURE_CREDENTIALS }} | jq -r '.clientId')" >> $GITHUB_ENV
-        echo "ARM_CLIENT_SECRET=$(echo ${{ secrets.AZURE_CREDENTIALS }} | jq -r '.clientSecret')" >> $GITHUB_ENV
-        echo "ARM_SUBSCRIPTION_ID=$(echo ${{ secrets.AZURE_CREDENTIALS }} | jq -r '.subscriptionId')" >> $GITHUB_ENV
-        echo "ARM_TENANT_ID=$(echo ${{ secrets.AZURE_CREDENTIALS }} | jq -r '.tenantId')" >> $GITHUB_ENV
+        echo "ARM_CLIENT_ID=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.clientId')" >> $GITHUB_ENV
+        echo "ARM_CLIENT_SECRET=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.clientSecret')" >> $GITHUB_ENV
+        echo "ARM_SUBSCRIPTION_ID=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.subscriptionId')" >> $GITHUB_ENV
+        echo "ARM_TENANT_ID=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.tenantId')" >> $GITHUB_ENV
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 
