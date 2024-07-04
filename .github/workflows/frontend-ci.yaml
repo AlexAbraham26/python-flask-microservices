@@ -47,6 +47,30 @@ jobs:
         pytest
     # Runs the test suite using pytest
 
+    - name: Set Up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.9.1
+    # Sets up Terraform
+
+    - name: Terraform Init
+      run: |
+        cd terraform
+        terraform init
+    # Initializes Terraform
+
+    - name: Terraform Plan
+      run: |
+        cd terraform
+        terraform plan
+    # Creates an execution plan
+
+    - name: Terraform Apply
+      run: |
+        cd terraform
+        terraform apply -auto-approve
+    # Applies the Terraform configuration
+
     - name: Set Up Docker Buildx
       uses: docker/setup-buildx-action@v2
     # Sets up Docker Buildx to support multi-platform builds
@@ -58,8 +82,28 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     # Logs in to Docker Hub using the Docker credentials 
 
-    - name: Build and Push Docker Image
+    - name: Build and Push Docker Image to Docker Hub
       run: |
         cd frontend
         docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest --push .
        # Builds the Docker image and pushes it to Docker Hub
+
+    - name: Log in to Azure
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    # Logs in to Azure using the service principal credentials
+
+    - name: Log in to ACR
+      run: |
+        az acr login --name frontendACR
+    # Logs in to Azure Container Registry (ACR)
+
+    - name: Build and Push Docker Image to ACR
+      run: |
+        cd frontend
+        docker buildx build --platform linux/amd64,linux/arm64 -t frontendACR.azurecr.io/frontend:latest --push .
+    # Builds the Docker image and pushes it to ACR
