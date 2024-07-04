@@ -1,8 +1,3 @@
-# main.tf
-provider "azurerm" {
-  features {}
-}
-
 resource "azurerm_resource_group" "main" {
   name     = "frontend-rg"
   location = "East US"
