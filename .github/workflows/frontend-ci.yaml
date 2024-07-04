@@ -74,18 +74,16 @@ jobs:
       run: |
         cd terraform
         terraform plan
-        terraform plan -out=tfplan
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     # Creates an execution plan
-
-    - name: Terraform Show
-      run: |
-        cd terraform
-        terraform show -json tfplan
 
     - name: Terraform Apply
       run: |
         cd terraform
         terraform apply -auto-approve
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     # Applies the Terraform configuration
 
     - name: Set Up Docker Buildx
