@@ -58,10 +58,18 @@ jobs:
         auth-type: 'SERVICE_PRINCIPAL'
     # Logs in to Azure using the service principal credentials
 
+    - name: Print Environment Variables
+      run: |
+        echo $ARM_CLIENT_ID
+        echo $ARM_CLIENT_SECRET
+        echo $ARM_SUBSCRIPTION_ID
+        echo $ARM_TENANT_ID
+      # Print environment variables to verify they are set
+
     - name: Set Up Terraform
       uses: hashicorp/setup-terraform@v2
       with:
-        terraform_version: 1.9.1
+        terraform_version: 1.5.0
     # Sets up Terraform
 
     - name: Terraform Init
@@ -75,7 +83,10 @@ jobs:
         cd terraform
         terraform plan
       env:
-        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     # Creates an execution plan
 
     - name: Terraform Apply
@@ -83,7 +94,10 @@ jobs:
         cd terraform
         terraform apply -auto-approve
       env:
-        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     # Applies the Terraform configuration
 
     - name: Set Up Docker Buildx
