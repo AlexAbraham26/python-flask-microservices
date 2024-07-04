@@ -1,4 +1,23 @@
-# variables.tf
+variable "client_id" {
+  description = "Client ID for the Azure Service Principal"
+  type        = string
+}
+
+variable "client_secret" {
+  description = "Client Secret for the Azure Service Principal"
+  type        = string
+}
+
+variable "tenant_id" {
+  description = "Tenant ID for the Azure subscription"
+  type        = string
+}
+
+variable "subscription_id" {
+  description = "Subscription ID for the Azure subscription"
+  type        = string
+}
+
 variable "location" {
   description = "The Azure region where resources will be deployed."
   default     = "East US"
