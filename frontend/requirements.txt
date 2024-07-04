@@ -15,7 +15,7 @@ Flask-Login==0.6.2
 Flask-Migrate==2.5.3
 Flask-SQLAlchemy==3.0.4
 Flask-Uploads==0.2.1
-Flask-WTF==0.14.3
+Flask-WTF==2.3.3
 idna==2.9
 itsdangerous==2.0.0
 Jinja2==3.0.0  
