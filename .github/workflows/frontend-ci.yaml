@@ -58,6 +58,16 @@ jobs:
         auth-type: 'SERVICE_PRINCIPAL'
       # Logs in to Azure using the service principal credentials
 
+    - name: Set Up Azure Credentials
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      run: |
+        echo "${AZURE_CREDENTIALS}" > /tmp/azure_creds.json
+        export ARM_CLIENT_ID=$(jq -r '.clientId' /tmp/azure_creds.json)
+        export ARM_CLIENT_SECRET=$(jq -r '.clientSecret' /tmp/azure_creds.json)
+        export ARM_SUBSCRIPTION_ID=$(jq -r '.subscriptionId' /tmp/azure_creds.json)
+        export ARM_TENANT_ID=$(jq -r '.tenantId' /tmp/azure_creds.json)
+
     - name: Set Up Terraform
       uses: hashicorp/setup-terraform@v2
       with:
@@ -65,23 +75,17 @@ jobs:
       # Sets up Terraform
 
     - name: Terraform Init
-      env:
-        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       run: |
         cd terraform
         terraform init
       # Initializes Terraform
 
     - name: Terraform Plan
-      env:
-        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       run: |
         cd terraform
         terraform plan
 
     - name: Terraform Apply
-      env:
-        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       run: |
         cd terraform
         terraform apply -auto-approve
