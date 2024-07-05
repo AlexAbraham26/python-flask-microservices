@@ -4,3 +4,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 migrations/
+
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfplan
