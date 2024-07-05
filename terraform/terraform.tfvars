@@ -1,7 +1,4 @@
-# client_id       = "a665d89f-bc20-4bc2-8302-ec9b24912ba9"
-# client_secret   = "Rbr8Q~BkFJ7VkGIR3OQ7tYI89KP50JiiktenEawG"
-# subscription_id = "2259cc2b-686f-4c03-875e-ca141145b26d"
-# tenant_id       = "1317796d-b63f-4731-8135-486165550f00"
+
 location        = "East US"
 resource_group_name = "frontend-rg"
 acr_name        = "frontendACR"
