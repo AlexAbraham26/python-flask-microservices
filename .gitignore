@@ -10,3 +10,5 @@ migrations/
 *.tfstate.backup
 *.tfvars
 *.tfplan
+
+dev-scripts.sh
