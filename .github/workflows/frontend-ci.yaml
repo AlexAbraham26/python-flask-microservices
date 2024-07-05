@@ -98,6 +98,7 @@ jobs:
 
     - name: Deploy to AKS
       run: |
+        sed -i "s|frontendACR.azurecr.io/frontend:latest|frontendACR.azurecr.io/frontend:${{ github.sha }}|g" k8s-specifications/frontend-deployment.yaml
         kubectl apply -f k8s-specifications/frontend-deployment.yaml
         kubectl apply -f k8s-specifications/frontend-service.yaml
       # Deploys the application to the AKS cluster using the Kubernetes manifests
