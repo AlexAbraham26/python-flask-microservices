@@ -58,6 +58,11 @@ jobs:
         auth-type: 'SERVICE_PRINCIPAL'
       # Logs in to Azure using the service principal credentials
 
+    - name: Check Network Connectivity
+      run: |
+        curl -I https://management.azure.com/
+      # Checks if the runner can reach Azure services
+
     - name: Set Up Terraform
       uses: hashicorp/setup-terraform@v2
       with:
@@ -74,6 +79,9 @@ jobs:
       run: |
         cd terraform
         terraform plan
+        terraform show -json tfplan | jq '.'
+      env:
+        TF_LOG: DEBUG
 
     - name: Terraform Apply
       run: |
