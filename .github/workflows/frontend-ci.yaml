@@ -83,12 +83,13 @@ jobs:
     - name: Terraform Plan
       run: |
         cd terraform
-        terraform plan
+        terraform plan -var-file="terraform.tfvars" > terraform_plan.log
+        cat terraform_plan.log
 
     - name: Terraform Apply
       run: |
         cd terraform
-        terraform apply -auto-approve
+        terraform apply -auto-approve -var-file="terraform.tfvars"
 
     - name: Set Up Docker Buildx
       uses: docker/setup-buildx-action@v2
