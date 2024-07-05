@@ -57,14 +57,6 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         auth-type: 'SERVICE_PRINCIPAL'
       # Logs in to Azure using the service principal credentials
-    
-    - name: Print Environment Variables
-      run: printenv
-
-    - name: Check Azure Connectivity
-      run: |
-        az account show
-        az group list
 
     - name: Set Up Terraform
       uses: hashicorp/setup-terraform@v2
@@ -73,17 +65,23 @@ jobs:
       # Sets up Terraform
 
     - name: Terraform Init
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       run: |
         cd terraform
         terraform init
       # Initializes Terraform
 
     - name: Terraform Plan
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       run: |
         cd terraform
         terraform plan
 
     - name: Terraform Apply
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       run: |
         cd terraform
         terraform apply -auto-approve
