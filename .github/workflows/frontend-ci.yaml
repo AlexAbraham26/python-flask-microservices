@@ -84,3 +84,20 @@ jobs:
         cd frontend
         docker buildx build --platform linux/amd64,linux/arm64 -t frontendACR.azurecr.io/frontend:latest --push .
       # Builds the Docker image and pushes it to ACR
+
+    - name: Set Up kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'latest'
+      # Sets up kubectl to interact with the AKS cluster
+
+    - name: Get AKS Credentials
+      run: |
+        az aks get-credentials --resource-group frontend-rg --name frontend-aks
+      # Retrieves the AKS credentials to allow kubectl to interact with the cluster
+
+    - name: Deploy to AKS
+      run: |
+        kubectl apply -f k8s-specifications/frontend-deployment.yaml
+        kubectl apply -f k8s-specifications/frontend-service.yaml
+      # Deploys the application to the AKS cluster using the Kubernetes manifests
