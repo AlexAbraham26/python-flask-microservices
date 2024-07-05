@@ -57,11 +57,14 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         auth-type: 'SERVICE_PRINCIPAL'
       # Logs in to Azure using the service principal credentials
+    
+    - name: Print Environment Variables
+      run: printenv
 
-    - name: Check Network Connectivity
+    - name: Check Azure Connectivity
       run: |
-        curl -I https://management.azure.com/
-      # Checks if the runner can reach Azure services
+        az account show
+        az group list
 
     - name: Set Up Terraform
       uses: hashicorp/setup-terraform@v2
@@ -79,22 +82,11 @@ jobs:
       run: |
         cd terraform
         terraform plan
-      env:
-        ARM_CLIENT_ID: ${{ secrets.AZURE_CREDENTIALS_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ secrets.AZURE_CREDENTIALS_CLIENT_SECRET }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_CREDENTIALS_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ secrets.AZURE_CREDENTIALS_TENANT_ID }}
-      # Runs Terraform plan
 
     - name: Terraform Apply
       run: |
         cd terraform
         terraform apply -auto-approve
-      env:
-        ARM_CLIENT_ID: ${{ secrets.AZURE_CREDENTIALS_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ secrets.AZURE_CREDENTIALS_CLIENT_SECRET }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_CREDENTIALS_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ secrets.AZURE_CREDENTIALS_TENANT_ID }}
 
     - name: Set Up Docker Buildx
       uses: docker/setup-buildx-action@v2
