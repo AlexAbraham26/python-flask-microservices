@@ -76,8 +76,7 @@ jobs:
       # Builds the Docker image and pushes it to Docker Hub
 
     - name: Log in to ACR
-      run: |
-        az acr login --name frontendACR
+      run: run: echo ${{ secrets.ACR_PASSWORD }} | docker login frontendACR.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
       # Logs in to Azure Container Registry (ACR)
 
     - name: Build and Push Docker Image to ACR
