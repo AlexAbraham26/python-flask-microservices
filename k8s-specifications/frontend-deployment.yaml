@@ -19,3 +19,5 @@ spec:
         image: frontendACR.azurecr.io/frontend:latest
         ports:
         - containerPort: 80
+      imagePullSecrets:
+      - name: acr-secret
