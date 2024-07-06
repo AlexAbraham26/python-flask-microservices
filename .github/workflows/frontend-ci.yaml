@@ -72,8 +72,8 @@ jobs:
     - name: Build and Push Docker Image to Docker Hub
       run: |
         cd frontend
-        docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest --push .
-      # Builds the Docker image and pushes it to Docker Hub
+        docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }} --push .
+      # Builds the Docker image and pushes it to Docker Hub with the SHA tag
 
     - name: Log in to ACR
       run: echo ${{ secrets.ACR_PASSWORD }} | docker login frontendACR.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
@@ -82,8 +82,8 @@ jobs:
     - name: Build and Push Docker Image to ACR
       run: |
         cd frontend
-        docker buildx build --platform linux/amd64,linux/arm64 -t frontendACR.azurecr.io/frontend:latest --push .
-      # Builds the Docker image and pushes it to ACR
+        docker buildx build --platform linux/amd64,linux/arm64 -t frontendACR.azurecr.io/frontend:${{ github.sha }} --push .
+       # Builds the Docker image and pushes it to ACR with the SHA tag
 
     - name: Set Up kubectl
       uses: azure/setup-kubectl@v3
@@ -95,10 +95,14 @@ jobs:
       run: |
         az aks get-credentials --resource-group frontend-rg --name frontend-aks
       # Retrieves the AKS credentials to allow kubectl to interact with the cluster
-
-    - name: Deploy to AKS
+    
+    - name: Update Deployment YAML with the correct image tag
       run: |
         sed -i "s|frontendACR.azurecr.io/frontend:latest|frontendACR.azurecr.io/frontend:${{ github.sha }}|g" k8s-specifications/frontend-deployment.yaml
+      # Updates the deployment YAML with the correct SHA tag
+   
+    - name: Deploy to AKS
+      run: |
         kubectl apply -f k8s-specifications/frontend-deployment.yaml
         kubectl apply -f k8s-specifications/frontend-service.yaml
       # Deploys the application to the AKS cluster using the Kubernetes manifests
