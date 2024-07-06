@@ -69,21 +69,23 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
       # Logs in to Docker Hub using the Docker credentials 
 
-    - name: Build and Push Docker Image to Docker Hub
+    - name: Build and Push Docker Image to Docker Hub with SHA and Latest Tags
       run: |
         cd frontend
         docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }} --push .
-      # Builds the Docker image and pushes it to Docker Hub with the SHA tag
+        docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest --push .
+      # Builds the Docker image and pushes it to Docker Hub with both SHA and latest tags
 
     - name: Log in to ACR
       run: echo ${{ secrets.ACR_PASSWORD }} | docker login frontendACR.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
       # Logs in to Azure Container Registry (ACR)
 
-    - name: Build and Push Docker Image to ACR
+     - name: Build and Push Docker Image to ACR with SHA and Latest Tags
       run: |
         cd frontend
         docker buildx build --platform linux/amd64,linux/arm64 -t frontendACR.azurecr.io/frontend:${{ github.sha }} --push .
-       # Builds the Docker image and pushes it to ACR with the SHA tag
+        docker buildx build --platform linux/amd64,linux/arm64 -t frontendACR.azurecr.io/frontend:latest --push .
+       # Builds the Docker image and pushes it to ACR with both SHA and latest tags
 
     - name: Set Up kubectl
       uses: azure/setup-kubectl@v3
