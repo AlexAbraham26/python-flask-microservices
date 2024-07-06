@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: frontendACR.azurecr.io/frontend:latest
+        image: frontendACR.azurecr.io/frontend:${{ github.sha }}
         ports:
         - containerPort: 80
       imagePullSecrets:
