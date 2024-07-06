@@ -80,7 +80,7 @@ jobs:
       run: echo ${{ secrets.ACR_PASSWORD }} | docker login frontendACR.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
       # Logs in to Azure Container Registry (ACR)
 
-     - name: Build and Push Docker Image to ACR with SHA and Latest Tags
+    - name: Build and Push Docker Image to ACR with SHA and Latest Tags
       run: |
         cd frontend
         docker buildx build --platform linux/amd64,linux/arm64 -t frontendACR.azurecr.io/frontend:${{ github.sha }} --push .
